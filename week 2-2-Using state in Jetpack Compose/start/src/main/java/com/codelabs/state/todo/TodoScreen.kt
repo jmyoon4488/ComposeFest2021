@@ -20,19 +20,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.codelabs.state.util.generateRandomTodoItem
@@ -121,7 +115,6 @@ fun TodoInputTextField(modifier: Modifier) {
 fun TodoInputTextField(text: String, onTextChange: (String) -> Unit, modifier: Modifier) {
     TodoInputText(text, onTextChange, modifier)
 }
-/*
 @Composable
 fun TodoItemInput(onItemComplete: (TodoItem) -> Unit) {
     // onItemComplete is an event will fire when an item is completed by the user
@@ -135,20 +128,16 @@ fun TodoItemInput(onItemComplete: (TodoItem) -> Unit) {
                 .padding(end = 8.dp)
             )
             TodoEditButton(
-                onClick = { */
-/* todo *//*
- },
+                onClick = { /*todo*/ },
                 text = "Add",
                 modifier = Modifier.align(Alignment.CenterVertically)
             )
         }
     }
 }
-*/
 
 @Composable
-fun TodoItemInput(onItemComplete: (TodoItem) -> Unit) {
-//    val (text, setText) = remember { mutableStateOf("") }
+fun TodoItemEntryInput(onItemComplete: (TodoItem) -> Unit) {
     val (text, setText) = remember { mutableStateOf("") }
     val (icon, setIcon) = remember { mutableStateOf(TodoIcon.Default)}
     val iconsVisible = text.isNotBlank()
@@ -157,33 +146,39 @@ fun TodoItemInput(onItemComplete: (TodoItem) -> Unit) {
         setIcon(TodoIcon.Default)
         setText("")
     }
+    TodoItemInput(
+        text = text,
+        onTextChange = setText,
+        icon = icon,
+        onIconChange = setIcon,
+        submit = submit,
+        iconsVisible = iconsVisible
+    )
+}
 
+@Composable
+fun TodoItemInput(
+    text: String,
+    onTextChange: (String) -> Unit,
+    icon: TodoIcon,
+    onIconChange: (TodoIcon) -> Unit,
+    submit: () -> Unit,
+    iconsVisible: Boolean
+) {
     Column {
-        Row(Modifier
-            .padding(horizontal = 16.dp)
-            .padding(top = 16.dp)
+        Row(
+            Modifier
+                .padding(horizontal = 16.dp)
+                .padding(top = 16.dp)
         ) {
-            TodoInputTextField(
-                text = text,
-                onTextChange = setText,
-                modifier = Modifier
+            TodoInputText(
+                text,
+                onTextChange,
+                Modifier
                     .weight(1f)
-                    .padding(end = 8.dp)
+                    .padding(end = 8.dp),
+                submit
             )
-            /*TodoEditButton(
-                onClick = { *//* todo *//* },
-                text = "Add",
-                modifier = Modifier.align(Alignment.CenterVertically)
-            )*/
-            /*TodoEditButton(
-                onClick = {
-                    onItemComplete(TodoItem(text)) // send onItemComplete event up
-                    setText("") // clear the internal text
-                },
-                text = "Add",
-                modifier = Modifier.align(Alignment.CenterVertically),
-                enabled = text.isNotBlank() // enable if text is not blank
-            )*/
             TodoEditButton(
                 onClick = submit,
                 text = "Add",
@@ -192,7 +187,7 @@ fun TodoItemInput(onItemComplete: (TodoItem) -> Unit) {
             )
         }
         if (iconsVisible) {
-            AnimatedIconRow(icon, setIcon, Modifier.padding(top = 8.dp))
+            AnimatedIconRow(icon, onIconChange, Modifier.padding(top = 8.dp))
         } else {
             Spacer(modifier = Modifier.height(16.dp))
         }
