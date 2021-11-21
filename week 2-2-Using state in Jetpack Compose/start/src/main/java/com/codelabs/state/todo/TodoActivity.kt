@@ -22,8 +22,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.tooling.preview.Preview
 import com.codelabs.state.ui.StateCodelabTheme
 
@@ -70,8 +68,12 @@ private fun TodoActivityScreen(todoViewModel: TodoViewModel) {
 private fun TodoActivityScreen(todoViewModel: TodoViewModel) {
     TodoScreen(
         items = todoViewModel.todoItems,
+        currentlyEditing = todoViewModel.currentEditItem,
         onAddItem = todoViewModel::addItem,
-        onRemoveItem = todoViewModel::removeItem
+        onRemoveItem = todoViewModel::removeItem,
+        onStartEdit = todoViewModel::onEditItemSelected,
+        onEditItemChange = todoViewModel::onEditItemChange,
+        onEditDone = todoViewModel::onEditDone
     )
 }
 
@@ -81,7 +83,11 @@ private fun basicPreview() {
     val items = listOf<TodoItem>()
     TodoScreen(
         items = items,
-        onAddItem = {  },
-        onRemoveItem = {  }
+        null,
+        onRemoveItem = {  },
+        onAddItem = {},
+        onEditDone = {},
+        onEditItemChange = {},
+        onStartEdit = {}
     )
 }
