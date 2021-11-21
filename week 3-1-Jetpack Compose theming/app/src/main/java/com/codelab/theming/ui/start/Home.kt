@@ -19,12 +19,7 @@ package com.codelab.theming.ui.start
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.ZeroCornerSize
@@ -42,6 +37,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -120,6 +116,39 @@ fun Header(
                 .padding(horizontal = 16.dp, vertical = 8.dp)
         )
     }
+}
+
+
+// custom
+@Composable
+fun LoginButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable RowScope.() -> Unit
+) {
+    Button(
+        colors = ButtonConstants.defaultButtonColors(
+            backgroundColor = MaterialTheme.colors.secondary
+        ),
+        onClick = onClick,
+        modifier = modifier
+    ) {
+        ProvideTextStyle(
+            TextStyle()
+        ) { // set our own text style
+        content()
+    }
+    }
+}
+
+@Composable
+fun AcmeButton(
+    // expose Button params consumers should be able to change
+) {
+    val acmeButtonShape: Shape =
+    Button(
+        shape = acmeButtonShape
+    )
 }
 
 @Composable
