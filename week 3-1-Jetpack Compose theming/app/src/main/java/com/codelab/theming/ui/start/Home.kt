@@ -27,13 +27,16 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.ZeroCornerSize
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Palette
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -200,6 +203,7 @@ fun PostItem(
         icon = {
             Image(
                 painter = painterResource(post.imageThumbId),
+                modifier = Modifier.clip(shape = MaterialTheme.shapes.small),
                 contentDescription = null
             )
         },
@@ -210,6 +214,25 @@ fun PostItem(
             PostMetadata(post)
         }
     )
+}
+
+@Composable
+fun FilledTextField(
+    // other parameters
+    shape: Shape = MaterialTheme.shapes.small.copy(
+        bottomStart = ZeroCornerSize, // overrides small theme style
+        bottomEnd = ZeroCornerSize // overrides small theme style
+    )
+) {
+
+}
+
+@Composable
+fun UserProfile(
+    shape: Shape = MaterialTheme.shapes.medium
+) {
+    Surface(shape = shape) {
+    }
 }
 
 @Preview("Post Item")
