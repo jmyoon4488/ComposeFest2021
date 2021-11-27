@@ -61,11 +61,24 @@ class TopAppBarTest {
             )
         }
 
-        composeTestRule.onRoot().printToLog("currentLabelExists")
+//        composeTestRule.onRoot().printToLog("currentLabelExists")
+//
+//        composeTestRule
+////            .onNodeWithText(RallyScreen.Accounts.name.toUpperCase())
+//            .onNodeWithContentDescription(RallyScreen.Accounts.name)
+//            .assertExists()
+
+        // 5. Merged and unmerged Semantics trees
+//        composeTestRule.onRoot(useUnmergedTree = true).printToLog("currentLabelExists")
 
         composeTestRule
-//            .onNodeWithText(RallyScreen.Accounts.name.toUpperCase())
-            .onNodeWithContentDescription(RallyScreen.Accounts.name)
+            .onNode(
+                hasText(RallyScreen.Accounts.name.toUpperCase()) and
+                        hasParent(
+                            hasContentDescription(RallyScreen.Accounts.name)
+                        ),
+                useUnmergedTree = true
+            )
             .assertExists()
     }
 }
